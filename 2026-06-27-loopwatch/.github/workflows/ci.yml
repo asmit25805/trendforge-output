@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: |
+          echo "::group::install"
+          START=$(date +%s)
+          npm ci
+          END=$(date +%s)
+          DURATION=$((END - START))
+          echo "✅ npm ci completed in ${DURATION}s"
+          echo "::endgroup::"
+
+      - name: Lint code
+        run: |
+          echo "::group::lint"
+          START=$(date +%s)
+          npm run lint
+          END=$(date +%s)
+          DURATION=$((END - START))
+          echo "✅ lint completed in ${DURATION}s"
+          echo "::endgroup::"
+
+      - name: Run tests
+        run: |
+          echo "::group::test"
+          START=$(date +%s)
+          npm test -- --ci --reporters=default
+          END=$(date +%s)
+          DURATION=$((END - START))
+          echo "✅ tests completed in ${DURATION}s"
+          echo "::endgroup::"

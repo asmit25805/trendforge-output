@@ -9,7 +9,7 @@ Each subfolder is a self-contained project with its own README, source code, tes
 
 | Date | Project | Description | Category | Inspired by |
 |------|---------|-------------|----------|-------------|
-| — | — | No projects yet | — | — |
+| 2026-06-27 | [loopwatch](./2026-06-27-loopwatch/) | Real‑time compliance, cost, and safety monitoring for AI‑agent loops with instant alerts and auto‑remediation | automation | [cobusgreyling/loop-engineering](https://github.com/cobusgreyling/loop-engineering) |
 
 ---
 *Auto-updated daily. Source: [trend-forge](https://github.com/asmit25805/trend-forge)*
