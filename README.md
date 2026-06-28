@@ -9,6 +9,7 @@ Each subfolder is a self-contained project with its own README, source code, tes
 
 | Date | Project | Description | Category | Inspired by |
 |------|---------|-------------|----------|-------------|
+| 2026-06-28 | [gitmind](./2026-06-28-gitmind/) | A git‑backed, language‑agnostic LLM knowledge engine with real‑time CRDT collaboration | llm | [inkeep/open-knowledge](https://github.com/inkeep/open-knowledge) |
 | 2026-06-27 | [loopwatch](./2026-06-27-loopwatch/) | Real‑time compliance, cost, and safety monitoring for AI‑agent loops with instant alerts and auto‑remediation | automation | [cobusgreyling/loop-engineering](https://github.com/cobusgreyling/loop-engineering) |
 
 ---

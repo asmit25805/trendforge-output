@@ -1,0 +1,43 @@
+[package]
+name = "gitmind"
+version = "0.1.0"
+edition = "2021"
+description = "A git‑backed, language‑agnostic knowledge engine with real‑time CRDT collaboration"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/asmit25805/gitmind"
+readme = "README.md"
+keywords = ["git", "crdt", "knowledge", "llm", "grpc"]
+categories = ["development-tools", "database", "network-programming"]
+
+[dependencies]
+tokio = { version = "1.38", features = ["full"] }
+tonic = { version = "0.11", features = ["transport"] }
+prost = "0.12"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+crdts = "7.0"
+uuid = { version = "1.8", features = ["v4"] }
+thiserror = "1.0"
+log = "0.4"
+env_logger = "0.10"
+git2 = "0.18"
+
+[dev-dependencies]
+anyhow = "1.0"
+assert_cmd = "2.0"
+tempfile = "3.10"
+tokio-test = "0.4"
+tonic = { version = "0.11", features = ["transport"] }
+
+[features]
+default = ["grpc"]
+grpc = ["tonic", "prost"]
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = true
+codegen-units = 1
+
+[workspace]
+members = ["src"]
