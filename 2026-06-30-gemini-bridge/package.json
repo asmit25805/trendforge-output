@@ -1,0 +1,51 @@
+{
+  "name": "gemini-bridge",
+  "version": "1.0.0",
+  "description": "Zero‑cost Gemini Web gateway exposing a unified OpenAI‑compatible, Google‑compatible, and Anthropic‑compatible API.",
+  "keywords": [
+    "gemini",
+    "bridge",
+    "openai",
+    "google",
+    "anthropic",
+    "cloudflare",
+    "typescript"
+  ],
+  "homepage": "https://github.com/asmit25805/gemini-bridge#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asmit25805/gemini-bridge.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asmit25805/gemini-bridge/issues"
+  },
+  "main": "dist/server.js",
+  "types": "dist/server.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint src/**/*.ts test/**/*.ts",
+    "test": "jest --coverage",
+    "prepare": "npm run build"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^3.3.2",
+    "zod": "^3.22.4",
+    "wrangler": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.3",
+    "eslint": "^8.48.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.28.1",
+    "jest": "^29.7.0",
+    "prettier": "^3.0.3",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  },
+  "license": "UNLICENSED"
+}
