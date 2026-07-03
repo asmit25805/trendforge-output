@@ -9,12 +9,13 @@ Each subfolder is a self-contained project with its own README, source code, tes
 
 | Date | Project | Description | Category | Inspired by |
 |------|---------|-------------|----------|-------------|
-| 2026-07-02 | [session-scribe](./2026-07-02-session-scribe/) | Privacy‑first, offline, incremental transcript archiver and searchable summary for any LLM‑assistant session | developer-tools | [raiyanyahya/recall](https://github.com/raiyanyahya/recall) |
-| 2026-06-30 | [gemini-bridge](./2026-06-30-gemini-bridge/) | Zero‑cost Gemini Web gateway that presents a unified OpenAI‑compatible, Google‑compatible, and Anthropic‑compatible API in a single Cloudflare‑Worker or Docker image | api | [Guardinary/web2gem](https://github.com/Guardinary/web2gem) |
-| 2026-06-28 | [gitmind](./2026-06-28-gitmind/) | A git‑backed, language‑agnostic LLM knowledge engine with real‑time CRDT collaboration | llm | [inkeep/open-knowledge](https://github.com/inkeep/open-knowledge) |
-| 2026-06-27 | [loopwatch](./2026-06-27-loopwatch/) | Real‑time compliance, cost, and safety monitoring for AI‑agent loops with instant alerts and auto‑remediation | automation | [cobusgreyling/loop-engineering](https://github.com/cobusgreyling/loop-engineering) |
-| 2026-06-29 | [codelink-pilot](./2026-06-29-codelink-pilot/) | A web‑only PWA cockpit that lets AI coding agents edit files in a sandboxed virtual filesystem with live previews and a WebAssembly PTY, enabling browser‑based AI‑driven development without Electron. | agent | [alchaincyf/fanbox](https://github.com/alchaincyf/fanbox) |
+| 2026-07-03 | [brew-ops-dashboard](./2026-07-03-brew-ops-dashboard/) | Predict coffee‑machine failures before they happen, keeping your shop running smoothly with automated maintenance recommendations. | web | [Zayfern/artisanal-streamlit-brew-metrics](https://github.com/Zayfern/artisanal-streamlit-brew-metrics) |
 | 2026-07-01 | [cogni-tune](./2026-07-01-cogni-tune/) | AI‑driven cloud‑config optimizer that turns raw telemetry into self‑healing configuration proposals | ai | [superloglabs/superlog](https://github.com/superloglabs/superlog) |
+| 2026-06-29 | [codelink-pilot](./2026-06-29-codelink-pilot/) | A web‑only PWA cockpit that lets AI coding agents edit files in a sandboxed virtual filesystem with live previews and a WebAssembly PTY, enabling browser‑based AI‑driven development without Electron. | agent | [alchaincyf/fanbox](https://github.com/alchaincyf/fanbox) |
+| 2026-06-27 | [loopwatch](./2026-06-27-loopwatch/) | Real‑time compliance, cost, and safety monitoring for AI‑agent loops with instant alerts and auto‑remediation | automation | [cobusgreyling/loop-engineering](https://github.com/cobusgreyling/loop-engineering) |
+| 2026-06-28 | [gitmind](./2026-06-28-gitmind/) | A git‑backed, language‑agnostic LLM knowledge engine with real‑time CRDT collaboration | llm | [inkeep/open-knowledge](https://github.com/inkeep/open-knowledge) |
+| 2026-06-30 | [gemini-bridge](./2026-06-30-gemini-bridge/) | Zero‑cost Gemini Web gateway that presents a unified OpenAI‑compatible, Google‑compatible, and Anthropic‑compatible API in a single Cloudflare‑Worker or Docker image | api | [Guardinary/web2gem](https://github.com/Guardinary/web2gem) |
+| 2026-07-02 | [session-scribe](./2026-07-02-session-scribe/) | Privacy‑first, offline, incremental transcript archiver and searchable summary for any LLM‑assistant session | developer-tools | [raiyanyahya/recall](https://github.com/raiyanyahya/recall) |
 
 ---
 *Auto-updated daily. Source: [trend-forge](https://github.com/asmit25805/trend-forge)*
