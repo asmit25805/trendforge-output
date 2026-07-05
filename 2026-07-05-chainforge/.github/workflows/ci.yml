@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          echo "Running npm ci to install exact dependencies"
+          npm ci
+
+      - name: Lint code
+        run: |
+          echo "Running lint to ensure code quality"
+          npm run lint
+
+      - name: Run tests
+        run: |
+          echo "Executing test suite"
+          npm test
