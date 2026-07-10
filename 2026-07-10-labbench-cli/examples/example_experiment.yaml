@@ -1,0 +1,17 @@
+id: "123e4567-e89b-12d3-a456-426614174000"
+name: "Demo Experiment"
+metadata:
+  description: "Simple experiment demonstrating two dummy plugins"
+  author: "labbench-cli example"
+steps:
+  - name: "prepare"
+    plugin_id: "dummy_prepare"
+    params:
+      input_path: "./data/input.txt"
+    depends_on: []
+  - name: "process"
+    plugin_id: "dummy_process"
+    params:
+      threshold: 0.75
+    depends_on:
+      - "prepare"

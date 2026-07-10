@@ -1,0 +1,8 @@
+click>=8.1.7
+pydantic>=2.5.3
+PyYAML>=6.0.1
+rich>=13.7.0
+networkx>=3.2.1
+psutil>=5.9.8
+setuptools>=68.2.2
+wheel>=0.41.2
