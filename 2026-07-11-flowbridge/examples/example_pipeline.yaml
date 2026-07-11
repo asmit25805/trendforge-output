@@ -1,0 +1,23 @@
+id: example_pipeline
+description: |
+  A minimal pipeline that demonstrates chaining two provider actions.
+  The first node performs a generic "create" operation, and the second node
+  consumes its output to perform a "notify" operation.
+trigger: manual
+nodes:
+  - id: create_resource
+    provider_id: dummy_provider
+    action_id: create
+    downstream:
+      - notify_user
+    params:
+      name: "sample_resource"
+      metadata:
+        purpose: "demo"
+  - id: notify_user
+    provider_id: dummy_provider
+    action_id: notify
+    downstream: []
+    params:
+      message: "Resource creation completed"
+      target: "user_endpoint"
