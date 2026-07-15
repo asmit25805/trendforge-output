@@ -1,0 +1,28 @@
+target:
+  hostname: "victim.host"
+  port: 443
+  metadata:
+    description: "Internal web service used for a sample hunt"
+    environment: "staging"
+
+recon:
+  modules:
+    - name: "PortScanReconModule"
+      config:
+        timeout_seconds: 5
+        max_ports: 1024
+    - name: "SubdomainReconModule"
+      config:
+        wordlist: "default"
+        max_depth: 2
+
+exploit:
+  modules:
+    - name: "WebExploitModule"
+      config:
+        language: "python"
+        template: "default"
+    - name: "ShellExploitModule"
+      config:
+        language: "bash"
+        sandbox: true
