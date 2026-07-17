@@ -1,0 +1,39 @@
+[package]
+name = "dnswatch"
+version = "0.1.0"
+edition = "2021"
+description = "Realtime TUI that monitors DNS propagation, DNSSEC validation, and DoH endpoint health while exporting Prometheus metrics."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/asmit25805/dnswatch"
+homepage = "https://github.com/asmit25805/dnswatch"
+readme = "README.md"
+keywords = ["dns", "tui", "prometheus", "dnssec", "doh"]
+categories = ["command-line-utilities", "network-programming", "monitoring"]
+
+[dependencies]
+tokio = { version = "1.35", features = ["full"] }
+clap = { version = "4.4", features = ["derive"] }
+ratatui = "0.26"
+trust-dns-client = "0.23"
+trust-dns-proto = "0.23"
+prometheus = "0.14"
+hyper = { version = "0.14", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+toml = "0.8"
+anyhow = "1.0"
+log = "0.4"
+env_logger = "0.10"
+once_cell = "1.19"
+
+[dev-dependencies]
+tokio = { version = "1.35", features = ["rt-multi-thread", "macros"] }
+assert_cmd = "2.0"
+predicates = "3.0"
+
+[[bin]]
+name = "dnswatch"
+path = "cmd/dnswatch.rs"
+test = false
+bench = false
+doc = false
+edition = "2021"
