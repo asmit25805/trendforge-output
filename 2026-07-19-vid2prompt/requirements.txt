@@ -1,0 +1,8 @@
+click
+pydantic
+ffmpeg-python
+opencv-python
+faster-whisper
+pytesseract
+imagehash
+Pillow
