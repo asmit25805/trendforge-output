@@ -1,0 +1,255 @@
+#!/usr/bin/env python3
+import sys
+import os
+import json
+import uuid
+import hashlib
+import pathlib
+import logging
+import datetime
+from typing import List, Dict, Any, Tuple
+
+import click
+
+from src.core.models import (
+    TransactionIntent,
+    BackendConfig,
+    TargetSpec,
+    HookSpec,
+)
+from src.core.engine import TransactionManager, TransactionResult
+from src.backends.local import LocalBackendAdapter
+from src.hooks.engine import HookEngine
+from src.snapshot.store import SnapshotStore
+
+_logger = logging.getLogger(__name__)
+_logging_handler = logging.StreamHandler()
+_logging_handler.setFormatter(
+    logging.Formatter("%(asctime)s %(levelname)s %(name)s %(message)s")
+)
+_logger.addHandler(_logging_handler)
+_logger.setLevel(logging.INFO)
+
+
+def _discover_config(start_dir: pathlib.Path) -> pathlib.Path | None:
+    """
+    Walk upward from *start_dir* looking for a ``.llm-configurator.json`` file.
+    Returns the first match or ``None`` if not found.
+    """
+    current = start_dir.resolve()
+    while True:
+        candidate = current / ".llm-configurator.json"
+        if candidate.is_file():
+            return candidate
+        if current.parent == current:
+            return None
+        current = current.parent
+
+
+def _load_config(config_path: pathlib.Path) -> Dict[str, Any]:
+    """
+    Load a JSON configuration file and return its contents as a dict.
+    """
+    with open(config_path, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+
+def _build_target_specs(files: List[click.Path]) -> List[TargetSpec]:
+    """
+    Convert a list of file paths into ``TargetSpec`` objects, computing the
+    SHA‑256 digest of each file's current contents.
+    """
+    specs: List[TargetSpec] = []
+    for file_path in files:
+        path = pathlib.Path(file_path).expanduser().resolve()
+        if not path.is_file():
+            raise click.ClickException(f"Target file '{path}' does not exist")
+        data = path.read_bytes()
+        sha256 = hashlib.sha256(data).hexdigest()
+        specs.append(
+            TargetSpec(
+                path=str(path),
+                sha256=sha256,
+                size=len(data),
+                mtime_ns=path.stat().st_mtime_ns,
+            )
+        )
+    return specs
+
+
+def _parse_backend_options(opts: Tuple[str, ...]) -> Dict[str, Any]:
+    """
+    Convert ``key=value`` strings into a dictionary.
+    """
+    options: Dict[str, Any] = {}
+    for opt in opts:
+        if "=" not in opt:
+            raise click.ClickException(
+                f"Backend option '{opt}' must be in key=value format"
+            )
+        key, value = opt.split("=", 1)
+        options[key.strip()] = value.strip()
+    return options
+
+
+def _build_hook_specs(hooks_dir: str | None) -> List[HookSpec]:
+    """
+    Scan *hooks_dir* for executable hook scripts and return a list of
+    ``HookSpec`` objects describing them.
+    """
+    if not hooks_dir:
+        return []
+    base = pathlib.Path(hooks_dir).expanduser().resolve()
+    if not base.is_dir():
+        raise click.ClickException(f"Hooks directory '{base}' does not exist")
+    specs: List[HookSpec] = []
+    for entry in base.rglob("*"):
+        if not entry.is_file():
+            continue
+        if entry.name.endswith(".disabled"):
+            continue
+        if not os.access(entry, os.X_OK):
+            continue
+        when = "pre"
+        name = entry.name.lower()
+        if name.startswith("pre_"):
+            when = "pre"
+        elif name.startswith("post_"):
+            when = "post"
+        else:
+            # Default to pre if not explicitly prefixed
+            when = "pre"
+        specs.append(
+            HookSpec(
+                path=str(entry),
+                when=when,
+            )
+        )
+    return specs
+
+
+@click.command(context_settings=dict(help_option_names=["-h", "--help"]))
+@click.argument(
+    "files",
+    nargs=-1,
+    type=click.Path(exists=True, dir_okay=False, readable=True, resolve_path=True),
+)
+@click.option(
+    "--hooks-dir",
+    type=click.Path(exists=True, file_okay=False, readable=True, resolve_path=True),
+    help="Directory containing executable pre/post hook scripts.",
+)
+@click.option(
+    "--backend-type",
+    type=click.Choice(["local", "s3", "gcs", "git", "vault"], case_sensitive=False),
+    default="local",
+    show_default=True,
+    help="Backend storage type.",
+)
+@click.option(
+    "--backend-opt",
+    multiple=True,
+    metavar="KEY=VALUE",
+    help="Key/value pair passed to the backend configuration.",
+)
+@click.option(
+    "--output",
+    type=click.Choice(["json", "text"], case_sensitive=False),
+    default="json",
+    show_default=True,
+    help="Result output format.",
+)
+def cli(
+    files: Tuple[str, ...],
+    hooks_dir: str | None,
+    backend_type: str,
+    backend_opt: Tuple[str, ...],
+    output: str,
+) -> None:
+    """
+    Deploy LLM prompts/configurations atomically.
+
+    Provide one or more target files as positional arguments. The command
+    creates a transaction, runs any configured hooks, writes the new payloads
+    via the selected backend, and finally commits the transaction.
+    """
+    try:
+        # 1️⃣ Discover optional project config and merge backend options
+        cwd = pathlib.Path.cwd()
+        config_path = _discover_config(cwd)
+        merged_options: Dict[str, Any] = {}
+        if config_path:
+            cfg = _load_config(config_path)
+            merged_options.update(cfg.get("backend_options", {}))
+        merged_options.update(_parse_backend_options(backend_opt))
+
+        # 2️⃣ Build core data structures
+        tx_id = str(uuid.uuid4())
+        target_specs = _build_target_specs(list(files))
+        backend_cfg = BackendConfig(type=backend_type, options=merged_options)
+        hook_specs = _build_hook_specs(hooks_dir)
+
+        intent = TransactionIntent(
+            tx_id=tx_id,
+            targets=target_specs,
+            backend=backend_cfg,
+            hooks=hook_specs,
+            timestamp=datetime.datetime.utcnow(),
+        )
+
+        # 3️⃣ Run the transaction
+        manager = TransactionManager()
+        result: TransactionResult = manager.run(intent)
+
+        # 4️⃣ Emit structured result
+        payload = {
+            "tx_id": tx_id,
+            "success": getattr(result, "success", True),
+            "message": getattr(result, "message", "Transaction completed"),
+        }
+        if output == "json":
+            click.echo(json.dumps(payload, default=str))
+        else:
+            click.echo(f"Transaction {tx_id}: {'SUCCESS' if payload['success'] else 'FAIL'}")
+            click.echo(payload["message"])
+
+        # Exit code reflects success
+        sys.exit(0 if payload["success"] else 1)
+
+    except click.ClickException as ce:
+        _logger.error("CLI error: %s", ce.format_message())
+        if output == "json":
+            click.echo(
+                json.dumps(
+                    {
+                        "tx_id": None,
+                        "success": False,
+                        "error": ce.format_message(),
+                        "hint": "Check file paths and permissions",
+                    }
+                )
+            )
+        else:
+            click.echo(f"Error: {ce.format_message()}", err=True)
+        sys.exit(2)
+
+    except Exception as exc:  # pylint: disable=broad-except
+        _logger.exception("Unexpected error during transaction")
+        if output == "json":
+            click.echo(
+                json.dumps(
+                    {
+                        "tx_id": None,
+                        "success": False,
+                        "error": str(exc),
+                        "hint": "Inspect logs for details",
+                    }
+                )
+            )
+        else:
+            click.echo(f"Unexpected error: {exc}", err=True)
+        sys.exit(3)
+
+
+if __name__ == "__main__":
+    cli()
