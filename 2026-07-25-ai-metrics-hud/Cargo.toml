@@ -1,0 +1,26 @@
+[package]
+name = "ai-metrics-hud"
+version = "0.1.0"
+edition = "2021"
+description = "Unified low‑latency statusline generator for LLM‑powered editors"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/asmit25805/ai-metrics-hud"
+homepage = "https://github.com/asmit25805/ai-metrics-hud"
+readme = "README.md"
+keywords = ["statusline", "llm", "telemetry"]
+categories = ["command-line-utilities"]
+
+[dependencies]
+clap = { version = "4.4", features = ["derive"] }
+colored = "2.0"
+log = "0.4"
+env_logger = "0.10"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+toml = "0.8"
+thiserror = "1.0"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1.4", features = ["v4"] }
+
+[dev-dependencies]
+assert_cmd = "2.0"
