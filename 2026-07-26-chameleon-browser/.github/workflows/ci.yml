@@ -1,0 +1,64 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          profile: minimal
+          components: clippy,rustfmt
+          override: true
+
+      - name: Cache Cargo registry
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/registry
+          key: ${{ runner.os }}-cargo-registry-${{ hashFiles('Cargo.toml') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-registry-
+
+      - name: Cache Cargo git dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cargo/git
+          key: ${{ runner.os }}-cargo-git-${{ hashFiles('Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-git-
+
+      - name: Cargo clippy
+        run: |
+          start=$(date +%s)
+          cargo clippy --all-targets --all-features -- -D warnings
+          end=$(date +%s)
+          echo "Clippy completed in $((end-start)) seconds"
+        env:
+          RUSTFLAGS: "-D warnings"
+
+      - name: Cargo test
+        run: |
+          start=$(date +%s)
+          cargo test --all-targets --all-features --quiet
+          end=$(date +%s)
+          echo "Tests completed in $((end-start)) seconds"
+        env:
+          RUST_BACKTRACE: 1
+
+      - name: Cargo build (release)
+        run: |
+          start=$(date +%s)
+          cargo build --release
+          end=$(date +%s)
+          echo "Release build completed in $((end-start)) seconds"
