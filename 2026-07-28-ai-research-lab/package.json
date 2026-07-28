@@ -1,0 +1,57 @@
+{
+  "name": "ai-research-lab",
+  "version": "1.0.0",
+  "description": "Self‑hosted, model‑agnostic research workbench that couples an autonomous planning agent with a sandboxed compute kernel and immutable artifact ledger.",
+  "main": "src/main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asmit25805/ai-research-lab.git"
+  },
+  "author": "asmit25805",
+  "license": "UNLICENSED",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc && electron-builder",
+    "lint": "eslint src/**/*.ts",
+    "test": "jest",
+    "start": "electron .",
+    "dev": "concurrently \"npm run watch\" \"npm run electron\"",
+    "watch": "tsc -w",
+    "electron": "electron ."
+  },
+  "dependencies": {
+    "electron": "^28.2.0",
+    "sqlite3": "^5.1.6",
+    "uuid": "^9.0.0",
+    "ajv": "^8.12.0",
+    "axios": "^1.6.2",
+    "eventemitter3": "^5.0.1"
+  },
+  "devDependencies": {
+    "@types/electron": "^28.2.0",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.30",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "jest": "^29.7.0",
+    "rimraf": "^5.0.5",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3",
+    "electron-builder": "^24.13.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "keywords": [
+    "ai",
+    "research",
+    "agent",
+    "sandbox",
+    "artifact",
+    "electron",
+    "typescript"
+  ]
+}
