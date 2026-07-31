@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+"""Entry point for the ``prompt-optimus`` command‑line interface.
+
+The script forwards all command‑line arguments to :func:`src.cli.main.main`,
+ensuring that the CLI behaves identically whether invoked via ``python -m
+prompt_optimus`` or through the installed console script.
+"""
+
+import sys
+from pathlib import Path
+
+from src.cli.main import main as cli_main
+
+
+def _resolve_config_path() -> Path | None:
+    """Return the first ``optim‑plan.yaml`` found when walking up from the cwd.
+
+    The function mirrors the discovery logic used by the example script but
+    returns ``None`` if no configuration file is located.  The CLI itself will
+    raise a ``ConfigurationError`` in that case.
+    """
+    cwd = Path.cwd()
+    for _ in range(10):
+        candidate = cwd / "optim-plan.yaml"
+        if candidate.is_file():
+            return candidate
+        if cwd.parent == cwd:
+            break
+        cwd = cwd.parent
+    return None
+
+
+def _run() -> int:
+    """Execute the CLI and return an exit status.
+
+    All uncaught exceptions are printed with a full traceback to aid debugging.
+    """
+    try:
+        # Forward the original argv (including the script name) to the CLI.
+        return cli_main(sys.argv)
+    except Exception:
+        # Let the default exception handling print a traceback.
+        raise
+
+
+if __name__ == "__main__":
+    sys.exit(_run())
