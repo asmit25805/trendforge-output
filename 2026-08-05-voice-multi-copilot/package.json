@@ -1,0 +1,40 @@
+{
+  "name": "voice-multi-copilot",
+  "version": "1.0.0",
+  "description": "Real‑time, multi‑agent voice co‑pilot that lets several AI assistants share one audio channel and negotiate tasks on the fly.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asmit25805/voice-multi-copilot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asmit25805/voice-multi-copilot/issues"
+  },
+  "homepage": "https://github.com/asmit25805/voice-multi-copilot#readme",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext .ts",
+    "test": "mocha --require ts-node/register test/**/*.test.ts",
+    "prepare": "npm run build"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "eventemitter3": "^5.0.1",
+    "sqlite3": "^5.1.6",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.5",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.30",
+    "@types/ws": "^8.5.10",
+    "chai": "^4.4.1",
+    "mocha": "^10.2.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "eslint": "^8.57.0",
+    "eslint-plugin-import": "^2.29.1"
+  }
+}
