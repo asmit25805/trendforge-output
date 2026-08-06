@@ -1,0 +1,53 @@
+{
+  "name": "polytrade-sdk",
+  "version": "1.0.0",
+  "description": "A pluggable, exchange‑agnostic TypeScript SDK that unifies REST and WebSocket trading APIs.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/asmit25805/polytrade-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/asmit25805/polytrade-sdk/issues"
+  },
+  "homepage": "https://github.com/asmit25805/polytrade-sdk#readme",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
+    "lint": "eslint 'src/**/*.ts' --fix",
+    "test": "jest --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "ws": "^8.17.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.14.2",
+    "@typescript-eslint/eslint-plugin": "^7.9.1",
+    "@typescript-eslint/parser": "^7.9.1",
+    "eslint": "^8.57.0",
+    "jest": "^29.7.0",
+    "rimraf": "^5.0.5",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.5"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "keywords": [
+    "crypto",
+    "trading",
+    "sdk",
+    "exchange",
+    "typescript",
+    "websocket",
+    "rest",
+    "rate-limit",
+    "plugin"
+  ],
+  "author": "",
+  "license": "UNLICENSED"
+}
