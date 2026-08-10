@@ -1,0 +1,66 @@
+{
+  "name": "review-sync",
+  "version": "1.0.0",
+  "description": "Secure offline document review with inline comments and batch polling for AI agents",
+  "main": "dist/server.js",
+  "bin": {
+    "review-sync": "./dist/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asmit25805/review-sync.git"
+  },
+  "homepage": "https://github.com/asmit25805/review-sync#readme",
+  "keywords": [
+    "review",
+    "offline",
+    "cli",
+    "typescript",
+    "express",
+    "comment",
+    "anchor"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "npm run clean && tsc",
+    "lint": "eslint 'src/**/*.ts' --fix",
+    "test": "jest --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "commander": "^12.0.0",
+    "express": "^4.19.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/commander": "^12.0.0",
+    "@types/express": "^4.17.21",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.30",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "jest": "^29.7.0",
+    "rimraf": "^5.0.5",
+    "ts-jest": "^29.1.2",
+    "typescript": "^5.4.5"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "collectCoverageFrom": [
+      "src/**/*.ts"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      }
+    }
+  }
+}
