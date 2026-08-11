@@ -1,0 +1,6 @@
+aiohttp>=3.9.0
+fastapi>=0.115.0
+pydantic>=2.8.0
+cryptography>=43.0.0
+aiosqlite>=0.20.0
+python-croniter>=3.0.0
