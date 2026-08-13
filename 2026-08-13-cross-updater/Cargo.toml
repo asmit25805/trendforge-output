@@ -1,0 +1,37 @@
+[package]
+name = "cross-updater"
+version = "0.1.0"
+edition = "2021"
+description = "Universal updater for Electron, NW.js, and native applications."
+repository = "https://github.com/asmit25805/cross-updater"
+homepage = "https://github.com/asmit25805/cross-updater"
+readme = "README.md"
+keywords = ["updater", "tauri", "electron", "nwjs"]
+categories = ["command-line-utilities", "development-tools::build-utils"]
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+tauri = { version = "1.5", features = ["api-all"] }
+reqwest = { version = "0.11", features = ["json", "stream", "gzip"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.28", features = ["full"] }
+thiserror = "1.0"
+log = "0.4"
+env_logger = "0.10"
+
+[dev-dependencies]
+assert_cmd = "2.0"
+tempfile = "3.8"
+tokio = { version = "1.28", features = ["full"] }
+
+[[bin]]
+name = "cross_updater"
+path = "src/main.rs"
+
+[profile.release]
+opt-level = "z"
+debug = false
+lto = true
+codegen-units = 1
+panic = "abort"
