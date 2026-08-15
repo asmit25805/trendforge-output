@@ -1,0 +1,36 @@
+{
+  "name": "collab-orbit",
+  "version": "1.0.0",
+  "description": "Pluggable CLI/runtime that creates collaborative AI workspaces with scoped memory and file stores.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/asmit25805/collab-orbit.git"
+  },
+  "author": "asmit25805",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint . --ext .ts"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "axios": "^1.7.2",
+    "p-retry": "^6.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.5",
+    "@types/node": "^20.11.30",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "@types/jest": "^29.5.12",
+    "eslint": "^8.57.0",
+    "@typescript-eslint/parser": "^7.5.0",
+    "@typescript-eslint/eslint-plugin": "^7.5.0"
+  }
+}
