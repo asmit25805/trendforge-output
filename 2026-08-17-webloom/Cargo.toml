@@ -1,0 +1,64 @@
+[package]
+name = "webloom"
+version = "0.1.0"
+edition = "2021"
+description = "On‑demand, AI‑friendly headless browser that streams a semantic DOM tree."
+readme = "README.md"
+repository = "https://github.com/asmit25805/webloom"
+homepage = "https://github.com/asmit25805/webloom"
+documentation = "https://docs.rs/webloom"
+license = "MIT OR Apache-2.0"
+keywords = ["headless", "browser", "semantic", "lld", "ai"]
+categories = ["web-programming", "asynchronous", "network-programming"]
+publish = true
+
+[dependencies]
+tokio = { version = "1.35", features = ["full"] }
+hyper = { version = "0.14", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+url = "2.5"
+anyhow = "1.0"
+thiserror = "1.0"
+parking_lot = "0.12"
+log = "0.4"
+env_logger = "0.11"
+futures = "0.3"
+once_cell = "1.19"
+
+# Optional dependencies used by specific components
+# (kept optional to allow minimal builds)
+[features]
+default = ["full"]
+full = ["tokio", "hyper", "serde", "serde_json", "url", "anyhow", "thiserror", "parking_lot", "log", "env_logger", "futures", "once_cell"]
+
+[dev-dependencies]
+tokio = { version = "1.35", features = ["full"], optional = false }
+serde = { version = "1.0", features = ["derive"], optional = false }
+serde_json = "1.0"
+url = "2.5"
+anyhow = "1.0"
+thiserror = "1.0"
+parking_lot = "0.12"
+log = "0.4"
+env_logger = "0.11"
+futures = "0.3"
+once_cell = "1.19"
+assert_cmd = "2.0"
+tempfile = "3.9"
+# Ensure tests compile with the same edition
+[profile.dev]
+opt-level = 0
+debug = true
+overflow-checks = true
+
+[profile.release]
+opt-level = 3
+debug = false
+lto = true
+codegen-units = 1
+panic = "unwind"
+strip = "symbols"
+
+[workspace]
+members = ["src", "examples", "tests"]
